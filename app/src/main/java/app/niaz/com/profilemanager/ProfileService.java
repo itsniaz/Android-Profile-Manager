@@ -213,7 +213,7 @@ public class ProfileService extends Service implements SensorEventListener{
 
         }
         //Device in pocket speaker upward
-        else if(aY<0 && aX>1 && distance==0 && light<=1.0)
+        else if(aY<0 && aX>1 && distance==0 && light<=.0)
         {
             if(!PROFILE_MODE.equalsIgnoreCase("VibrateAndRing"))
             {
