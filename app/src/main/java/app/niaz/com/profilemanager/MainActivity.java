@@ -10,16 +10,17 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
     Intent pServiceIntent;
-    public  static TextView tv;
+    public  static TextView profileMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pServiceIntent = new Intent(this,ProfileService.class);
 
+
         Button startBtn = (Button)findViewById(R.id.startBtn);
         Button stopBtn = (Button)findViewById(R.id.stopBtn);
-        tv = (TextView)findViewById(R.id.editText2);
+        profileMode = (TextView)findViewById(R.id.profileMode);
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override

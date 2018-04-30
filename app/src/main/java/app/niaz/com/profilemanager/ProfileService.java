@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class ProfileService extends Service implements SensorEventListener{
 
-    public static String PROFILE_MODE;
+    public static String PROFILE_MODE="";
 
     public String log_tag ="Profile Mode";
 
@@ -38,6 +38,18 @@ public class ProfileService extends Service implements SensorEventListener{
     private float aY;
     private float aZ;
     private float light;
+
+    //Label Change in Activity
+
+    public void changeLabel(String label)
+    {
+        if(MainActivity.profileMode!=null)
+        {
+            MainActivity.profileMode.setText("Current Mode : "+ label);
+        }
+
+        Log.d(log_tag, PROFILE_MODE);
+    }
 
     //Audio Manager
 
@@ -170,39 +182,57 @@ public class ProfileService extends Service implements SensorEventListener{
         //Device facing upward on a table
         if(aZ>-9 && distance>=5 && aY<=0)
         {
-            activateModeNormal();
-            PROFILE_MODE = "Normal";
-            Log.d(log_tag, PROFILE_MODE);
+            if(!PROFILE_MODE.equalsIgnoreCase("Normal"))
+            {
+                activateModeNormal();
+                PROFILE_MODE = "Normal";
+                changeLabel(PROFILE_MODE);
+            }
+
         }
         //Device facedown on table
-        else if(aZ<-8.5 && distance==0 && aY<=0)
+        else if(aZ<-8.5 && distance==0 && aY<=1)
         {
-            activateModeSilent();
-            PROFILE_MODE = "Silent Only";
-            Log.d(log_tag, PROFILE_MODE);
+            if(!PROFILE_MODE.equalsIgnoreCase("Silent"))
+            {
+                activateModeSilent();
+                PROFILE_MODE = "Silent";
+                changeLabel(PROFILE_MODE);
+            }
+
         }
         //Device in pocket speaker downward
-        else if(aY>0 && distance==0 && light<=1.0)
+        else if(aY>0 && aZ<0 && distance==0 && light<=1.0)
         {
-            activateModeVibrate();
-            PROFILE_MODE = "Vibrate Only";
-            Log.d(log_tag, PROFILE_MODE);
+            if(!PROFILE_MODE.equalsIgnoreCase("Vibrate"))
+            {
+                activateModeVibrate();
+                PROFILE_MODE = "Vibrate";
+                changeLabel(PROFILE_MODE);
+            }
+
         }
         //Device in pocket speaker upward
-        else if(aY<0 && aX>1 && distance==0)
+        else if(aY<0 && aX>1 && distance==0 && light<=1.0)
         {
-            activateRingAndVibrate();
-            PROFILE_MODE = "Vibrate & Ring";
-            Log.d(log_tag, PROFILE_MODE);
+            if(!PROFILE_MODE.equalsIgnoreCase("VibrateAndRing"))
+            {
+                activateModeVibrate();
+                PROFILE_MODE = "VibrateAndRing";
+                changeLabel(PROFILE_MODE);
+            }
+
         }
         else
         {
-            activateModeNormal();
-            PROFILE_MODE = "Normal";
-            Log.d(log_tag, PROFILE_MODE);
-        }
-        MainActivity.tv.setText(
+            if(!PROFILE_MODE.equalsIgnoreCase("Normal"))
+            {
+                activateModeNormal();
+                PROFILE_MODE = "Normal";
+                changeLabel(PROFILE_MODE);
+            }
 
-                String.format("\nX : %f\nY : %f\nZ : %f\nLight : %f\nDistance : %f\n"+PROFILE_MODE,aX,aY,aZ,light,distance));
+        }
+
     }
 }
